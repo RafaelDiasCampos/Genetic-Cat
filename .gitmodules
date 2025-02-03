@@ -4,3 +4,6 @@
 [submodule "baseline/Extreme_Breach_Masks"]
 	path = baseline/Extreme_Breach_Masks
 	url = https://github.com/sean-t-smith/Extreme_Breach_Masks
+[submodule "baseline/--force"]
+	path = baseline/--force
+	url = https://github.com/sean-t-smith/Extreme_Breach_Masks

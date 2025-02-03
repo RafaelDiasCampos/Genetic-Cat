@@ -1,0 +1,6 @@
+[submodule "baseline/Corporate_Masks"]
+	path = baseline/Corporate_Masks
+	url = https://github.com/golem445/Corporate_Masks
+[submodule "baseline/Extreme_Breach_Masks"]
+	path = baseline/Extreme_Breach_Masks
+	url = https://github.com/sean-t-smith/Extreme_Breach_Masks

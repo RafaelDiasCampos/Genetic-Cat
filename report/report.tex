@@ -195,9 +195,9 @@
 \maketitle
 
 \section{Introduction}
-During Information Security Red Team operations, it's common to encounter password hashes when performing offensive tasks.
-For example, during post-exploitation activities in an Active Directory environment, it's possible to extract NTLM hashes from the domain controller.
-In order to recover the original password from these hashes, it's necessary to use password cracking tools.
+During Information Security Red Team operations, it is common to encounter password hashes when performing offensive tasks.
+For example, during post-exploitation activities in an Active Directory environment, it is possible to extract NTLM hashes from the domain controller.
+In order to recover the original password from these hashes, it is necessary to use password cracking tools.
 One of the most popular tools for this task is Hashcat \cite{hashcat},
 that supports a wide range of hash types and attack modes and make efficient use of the graphics card (GPU) to improve the speed of the attacks.
 
@@ -214,18 +214,18 @@ These attacks can be further extended by using rules to modify the candidate pas
   \item \textbf{Mask attack}: Hashcat generates candidate passwords based on a mask or list of masks.
 These masks define the structure of the candidate passwords, with each character in the mask representing a character in the candidate password.
 
-  \item \textbf{Hybrid attack}: Hashcat combines the dictionary and mask attacks, generating candidate passwords by applying masks either before or afther the words in the dictionary.
+  \item \textbf{Hybrid attack}: Hashcat combines the dictionary and mask attacks, generating candidate passwords by applying masks either before or after the words in the dictionary.
 \end{itemize}
 
 The most difficult part of the password cracking process is generating effective candidate passwords.
-On one hand, it's desired to generate as many candidate passwords as possible, since that increases the chances one of them will match the target hash.
+On one hand, it is desired to generate as many candidate passwords as possible, since that increases the chances one of them will match the target hash.
 On the other, hand generating too many candidate passwords and calculating their respective hashes can be computationally expensive, slowing down the cracking process.
 For this reason, the main goal of password cracking is to generate the most effective candidate passwords, that is, the ones that are more likely to match the target hashes.
 
-When working with the dictionary attack mode, it's common to use wordlists available on the internet.
+When working with the dictionary attack mode, it is common to use wordlists available on the internet.
 These wordlists are usually created from real passwords leaked in data breaches, and therefore should contain good candidate passwords.
-Alternatively, it's possible to create custom wordlists by combining existing wordlists or using tools like CUPP \cite{cupp} to generate them.
-Lastly, it's possible to use rules to modify the candidate passwords, for example by adding numbers or special characters to them.
+Alternatively, it is possible to create custom wordlists by combining existing wordlists or using tools like CUPP \cite{cupp} to generate them.
+Lastly, it is possible to use rules to modify the candidate passwords, for example by adding numbers or special characters to them.
 
 However, finding effective masks can be a more challenging process.
 There are two large commonly available masks on the internet: the Corporate Masks \cite{corporate_masks} and the Extreme Breach Masks \cite{extreme_breach_masks}.
@@ -253,23 +253,23 @@ For example, the mask \textbf{?l?l?l?l?l?l} represents a candidate password with
 The mask \textbf{?d?d?d?d?d?d} represents a candidate password with 6 digits.
 The mask \textbf{?l?d?l?d?l?d} represents a candidate password with 3 pairs of lowercase letters and digits.
 
-For this paper, we will consider masks that contain only the character sets \textbf{?d}, \textbf{?l}, \textbf{?u}, \textbf{?s}, and \textbf{?a}.
-We'll also seaparate the masks based on their number of characters.
+For this paper, we consider masks that contain only the character sets \textbf{?d}, \textbf{?l}, \textbf{?u}, \textbf{?s}, and \textbf{?a}.
+We also separate the masks based on their number of characters.
 This way, each list of masks can be used to recover passwords of a specific length.
 
-In this paper, we'll only consider masks that generate candidate passwords with a length between 8 and 15 characters.
+In this paper, we only consider masks that generate candidate passwords with a length between 8 and 15 characters.
 These lengths were chosen because passwords shorter than 8 characters can often be cracked by doing an exhaustive search of every password candidate.
 On the other hand, passwords longer than 15 characters are less common and take longer to crack, so they are not likely to be recovered in a reasonable time.
 
 \section{Measuring Effectiveness of Masks}
 
-Initially, it's necessary to decide how to evaluate the effectiveness of a list of masks.
+Initially, it is necessary to decide how to evaluate the effectiveness of a list of masks.
 The most obvious metric for measuring a mask effectiveness is the number of candidate passwords generated by the mask that match the target hashes.
 However, this metric alone is not enough, since the goal is to generate the most candidate passwords in the shortest time possible.
-Therefore, it's necessary to consider the time taken to generate the candidate passwords, which is proportional to the number of candidate passwords generated by that mask.
+Therefore, it is necessary to consider the time taken to generate the candidate passwords, which is proportional to the number of candidate passwords generated by that mask.
 
-Additionally, it's important to consider that, in most real world scenarios, there's a limited for performing the brute force attacks.
-However, at the same time, it's not an issue if a mask takes longer to execute than the available time, since it can be executed only partially.
+Additionally, it is important to consider that, in most real world scenarios, there is a limited for performing the brute force attacks.
+However, at the same time, it is not an issue if a mask takes longer to execute than the available time, since it can be executed only partially.
 At the same time, there should be a penalty for masks that exceed the maximum cost, to prioritize masks that fit the desired cost.
 With that in mind, we decided to evaluate the masks based on the following metrics:
 
@@ -307,9 +307,9 @@ In this paper, we used the Weakpass 4 wordlist \cite{weakpass4}, that can be fre
 This list contains over 2 billion passwords obtained in data breaches, so it should be a good source of real passwords.
 
 After obtaining the wordlist, we separated it into smaller wordlists, based on the password length.
-With these smaller wordlists, it's now possible to load one of them into memory and iterate over the passwords and check if they are generated by the mask.
+With these smaller wordlists, it is now possible to load one of them into memory and iterate over the passwords and check if they are generated by the mask.
 However, the large number of passwords in the wordlist makes this process computationally expensive.
-Therefore, it's necessary to use a more efficient method to calculate the number of matches.
+Therefore, it is necessary to use a more efficient method to calculate the number of matches.
 
 For this method, we first sorted each wordlist according to the following order:
 
@@ -326,7 +326,7 @@ The structure can be observed in figure AAA
 
 The created structure allows for quickly calculating how many passwords a mask would crack, by traversing it and returning the value of the last node.
 However, special care needs to be taken when dealing with a list of masks.
-Multiple masks can generate the same password, so it's necessary to avoid counting them repeatedly.
+Multiple masks can generate the same password, so it is necessary to avoid counting them repeatedly.
 To solve this issue, we used a set to store the last nodes reached by the masks, and later sum the values of these nodes to calculate the total number of matches.
 
 With this method, it was possible to calculate the number of matches for a mask in a fraction of the time it would take to iterate over the wordlist.
@@ -334,7 +334,7 @@ With this method, it was possible to calculate the number of matches for a mask 
 \subsection{Calculating the cost}
 
 The other metric used for calculating the fitness of a mask is the cost, that is, the number of candidate passwords generated by the mask.
-Before calculating the cost of a mask, it's useful to calculate the cost of a character set, according to the number of characters in that set.
+Before calculating the cost of a mask, it is useful to calculate the cost of a character set, according to the number of characters in that set.
 The table cost of each character set can be seen in table \ref{tab:cost}.
 
 \begin{table}
@@ -353,12 +353,12 @@ The table cost of each character set can be seen in table \ref{tab:cost}.
   \end{tabular}
 \end{table}
 
-Since the masks generate a candidate password by combining the character sets, it's possible to calculate their cost by multiplying the cost of the character sets that compose it.
+Since the masks generate a candidate password by combining the character sets, it is possible to calculate their cost by multiplying the cost of the character sets that compose it.
 
 \subsection{Deciding the parameters}
 \label{sec:deciding_parameters}
 
-After designing a method for evaluating the fitness of a list of masks, it's necessary to decide the parameters used in the fitness function.
+After designing a method for evaluating the fitness of a list of masks, it is necessary to decide the parameters used in the fitness function.
 For this paper, we decided to use the following parameters:
 
 \begin{itemize}
@@ -367,18 +367,18 @@ For this paper, we decided to use the following parameters:
 \end{itemize}
 
 The maximum cost was chosen based on the runtime of about 10 hours in a computer with an Nvidia RTX 3070 Ti, measured at $76146.5$ MH/s with NTLM hashes.
-The fitness penanlty was chosen to only slightly penalize masks that exceed the maximum cost, since it's not a significant issue if a mask takes longer to execute than the available time.
+The fitness penalty was chosen to only slightly penalize masks that exceed the maximum cost, since it is not a significant issue if a mask takes longer to execute than the available time.
 
 \section{Calculating the fitness of the current methods}
 \label{sec:calculating_baseline_fitness}
 
-After designing a method for evaluating the fitness of a list of masks, it's necessary to calculate the fitness of the current used methods.
+After designing a method for evaluating the fitness of a list of masks, it is necessary to calculate the fitness of the current used methods.
 For this paper, we used the Corporate Masks \cite{corporate_masks} and the Extreme Breach Masks \cite{extreme_breach_masks}, as they are popular and freely available on the internet.
 Both of these lists contains masks for passwords of different lengths, and we calculated the fitness of each mask in each list.
 
 The Extreme Breach Masks contains different lists of masks, depending on their total runtime.
-We used the largest one that isn't compressed (14 1-year) because it includes all the masks in the previous lists.
-Furhtermore, we considered that the masks were sorted by their other of priority, since hashcat runs them in order.
+We used the largest one that is not compressed (14 1-year) because it includes all the masks in the previous lists.
+Furthermore, we considered that the masks were sorted by their other of priority, since hashcat runs them in order.
 
 For each password length decided in section \ref{sec:hashcat_masks}, we started calculating the fitness of the first mask in the list, using the parameters defined in section \ref{sec:deciding_parameters}.
 We then added the second mask, and calculated the fitness of the combined list.
@@ -386,7 +386,7 @@ This process was repeated until the fitness dropped from one iteration to the ne
 At this time, we returned the maximum fitness obtained, the masks that generated it, and their cost.
 
 The results of calculations for the Corporate Masks can be seen in table \ref{tab:fitness_corporate}.
-One additional observation is that there are not masks with 15 characters in the Corporate Masks, so we didn't calculate the fitness for this length.
+One additional observation is that there are not masks with 15 characters in the Corporate Masks, so we did not calculate the fitness for this length.
 The results of calculations for the Extreme Breach Masks can be seen in table \ref{tab:fitness_extreme}.
 
 \begin{table}
@@ -433,8 +433,8 @@ However, for length 8, the Corporate Masks have a much lower cost, while for len
 
 \section{Genetic Algorithm}
 
-After calculating the fitness of the current methods, it's necessary to design a method for optimizing the masks.
-For this paper, we decided to use a genetic algorithm, since it's a popular method for optimizing problems with a large search space.
+After calculating the fitness of the current methods, it is necessary to design a method for optimizing the masks.
+For this paper, we decided to use a genetic algorithm, since it is a popular method for optimizing problems with a large search space.
 The genetic algorithm works by creating a population of candidate solutions, and then evolving them over multiple generations.
 A simple general-purpose genetic algorithm was implemented using Python, that receives the following parameters:
 
@@ -465,7 +465,7 @@ Each charset contains their representation by hashcat, and their cost, as define
 Following this, we created a Mask class that contains a list of MaskCharset, representing the mask.
 This class contains a cost attribute, calculated by multiplying the cost of each MaskCharset in the list, and a method to generate the mask string, that is used by hashcat.
 
-Finally, we created a MaskIndividual class that contains a list of Mask, representing the individual, and a paramter that defines the maximum number of masks that can be contained in the individual.
+Finally, we created a MaskIndividual class that contains a list of Mask, representing the individual, and a parameter that defines the maximum number of masks that can be contained in the individual.
 This class also contains a cost attribute, calculated by summing the cost of each Mask in the list.
 
 \subsection{Genetic Operators}
@@ -475,7 +475,7 @@ The crossover operator works by selecting two individuals from the population, a
 The mutation operator works by selecting an individual from the population, and modifying it to create a new individual.
 
 For the crossover operator, we generate the offspring by combining some masks from each parent.
-We first decide on the amount of masks each children will have, by generating a random number betwewen 1 and the maximum number of masks.
+We first decide on the amount of masks each children will have, by generating a random number between 1 and the maximum number of masks.
 This number is generated following a normal distribution centered around the average number of masks in each parent.
 We then select the masks from each parent, and combine them to create the children.
 
@@ -495,7 +495,7 @@ The function also receives the maximum cost and the fitness penalty as parameter
 
 \subsection{Deciding the Parameters}
 
-After designing the genetic algorithm, it's necessary to decide the parameters used in the algorithm.
+After designing the genetic algorithm, it is necessary to decide the parameters used in the algorithm.
 For this paper, we used the Python library Optuna \cite{optuna} to perform hyperparameter optimization.
 This library works by performing multiple trials, each with a different set of parameters, and selecting the one that maximizes the fitness of the individuals.
 We first chose the search space for each parameter when considering masks of length 10, and then ran the optimization process for 500 trials.
@@ -670,7 +670,7 @@ Lastly, different methods could be used to search for the optimal masks, such as
 
 \section{Masks generated by the Genetic Algorithm}
 
-The masks generated by the genetic algorithm can be seen in the following tables.
+The masks generated by the genetic algorithm are included in the following subsections.
 
 \subsection{Masks for passwords of length 8}
 \lstinputlisting{../results/masks/masks_8.txt}

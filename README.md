@@ -1,7 +1,7 @@
 # Genetic-Cat: Optimizing Hashcat Masks with Genetic Algorithms
 
 ## Overview
-Genetic-Cat is an advanced optimization tool designed to enhance the efficiency of password cracking using Hashcat. By leveraging **genetic algorithms**, this project generates optimized masks that improve the success rate of brute-force attacks while reducing computational overhead.
+Genetic-Cat is an optimization tool designed to enhance the efficiency of password cracking using Hashcat. By leveraging **genetic algorithms**, this project generates optimized masks that improve the success rate of brute-force attacks while reducing computational overhead.
 
 ## Features
 - **Genetic Algorithm Optimization**: Dynamically evolves Hashcat masks for better efficiency.
